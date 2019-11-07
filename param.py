@@ -15,7 +15,7 @@ parser.add_argument('--query_type', type=str, default='tpch',
                     help='query type (default: tpch)')
 parser.add_argument('--job_folder', type=str, default='./spark_env/tpch/',
                     help='job folder path (default: ./spark_env/tpch/)')
-parser.add_argument('--result_folder', type=str, default='./results/',
+parser.add_argument('--result_folder', type=str, default='results/',
                     help='Result folder path (default: ./results)')
 parser.add_argument('--model_folder', type=str, default='./models/',
                     help='Model folder path (default: ./models)')
@@ -109,14 +109,14 @@ parser.add_argument('--entropy_weight_decay', type=float, default=1e-3,
                     help='Entropy weight decay rate (default: 1e-3)')
 parser.add_argument('--log_file_name', type=str, default='log',
                     help='log file name (default: log)')
-parser.add_argument('--master_num_gpu', type=int, default=0,
+parser.add_argument('--master_num_gpu', type=int, default=1,
                     help='Number of GPU cores used in master (default: 0)')
-parser.add_argument('--worker_num_gpu', type=int, default=0,
+parser.add_argument('--worker_num_gpu', type=int, default=1,
                     help='Number of GPU cores used in worker (default: 0)')
 parser.add_argument('--master_gpu_fraction', type=float, default=0.5,
-                    help='Fraction of memory master uses in GPU (default: 0.5)')
+                    help='Fraction of memory master uses in GPU (default: 0.4)')
 parser.add_argument('--worker_gpu_fraction', type=float, default=0.1,
-                    help='Fraction of memory worker uses in GPU (default: 0.1)')
+                    help='Fraction of memory worker uses in GPU (default: 0.3)')
 parser.add_argument('--average_reward_storage_size', type=int, default=100000,
                     help='Storage size for computing average reward (default: 100000)')
 parser.add_argument('--reset_prob', type=float, default=0,

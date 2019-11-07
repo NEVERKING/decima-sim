@@ -1,5 +1,6 @@
 import os
 from param import *
+from spark_env.timeline import Timeline
 from utils import *
 from spark_env.task import *
 from spark_env.node import *
@@ -7,7 +8,7 @@ from spark_env.job_dag import *
 
 
 def load_job(file_path, query_size, query_idx, wall_time, np_random):
-    query_path = file_path + query_size + '/'
+    query_path = file_path + query_size + '\\'
     
     adj_mat = np.load(
         query_path + 'adj_mat_' + str(query_idx) + '.npy', allow_pickle=True)
@@ -152,3 +153,11 @@ def generate_jobs(np_random, timeline, wall_time):
         exit(1)
 
     return job_dags
+
+
+if __name__ == '__main__':
+    jobs = load_job(r'D:\Develop\WorkSpace\Pycharm\decima-sim\spark_env\tpch\\', '100g', 10, Timeline(), np.random.RandomState())
+    print(jobs.adj_mat)
+    print(jobs.arrived)
+    print([i.idx for i in jobs.nodes])
+    print([i.tasks[0].duration for i in jobs.nodes])

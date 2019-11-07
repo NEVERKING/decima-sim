@@ -10,6 +10,7 @@ import numpy as np
 import tensorflow as tf
 from tf_op import glorot, ones, zeros
 
+
 class GraphCNN(object):
     def __init__(self, inputs, input_dim, hid_dims, output_dim,
                  max_depth, act_fn, scope='gcn'):
@@ -32,7 +33,7 @@ class GraphCNN(object):
             tf.float32, [None, 1]) for _ in range(self.max_depth)]
 
         # initialize message passing transformation parameters
-        # h: x -> x'
+        # h: x -> x' 升高维度
         self.prep_weights, self.prep_bias = \
             self.init(self.input_dim, self.hid_dims, self.output_dim)
 
@@ -76,12 +77,13 @@ class GraphCNN(object):
         # the information is flowing from leaves to roots
         x = self.inputs
 
-        # raise x into higher dimension
+        # raise x into higher dimension 将输入 x 升高维度 x'
         for l in range(len(self.prep_weights)):
             x = tf.matmul(x, self.prep_weights[l])
             x += self.prep_bias[l]
             x = self.act_fn(x)
 
+        # x := x'
         for d in range(self.max_depth):
             # work flow: index_select -> f -> masked assemble via adj_mat -> g
             y = x

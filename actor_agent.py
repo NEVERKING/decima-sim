@@ -100,7 +100,7 @@ class ActorAgent(Agent):
             self.job_act_probs, self.job_act_vec),
             reduction_indices=2), reduction_indices=1, keep_dims=True)
 
-        # actor loss due to advantge (negated)
+        # actor loss due to advantage (negated)
         self.adv_loss = tf.reduce_sum(tf.multiply(
             tf.log(self.selected_node_prob * self.selected_job_prob + \
             self.eps), -self.adv))
@@ -499,7 +499,8 @@ class ActorAgent(Agent):
                running_dags_mat, dag_summ_backward_map, \
                exec_map, job_dags_changed
 
-    def get_action(self, obs):
+    def \
+            get_action(self, obs):
 
         # parse observation
         job_dags, source_job, num_source_exec, \

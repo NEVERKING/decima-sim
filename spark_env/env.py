@@ -54,6 +54,7 @@ class Environment(object):
         self.exec_commit.add_job(job_dag)
 
     def assign_executor(self, executor, frontier_changed):
+        # executor分配有node，并且还有task没有完成，就继续执行
         if executor.node is not None and not executor.node.no_more_tasks:
             # keep working on the previous node
             task = executor.node.schedule(executor)
@@ -93,7 +94,7 @@ class Environment(object):
 
     def backup_schedule(self, executor):
         # This function is triggered very rarely. A random policy
-        # or the learned polici in early iterations might decide
+        # or the learned policy in early iterations might decide
         # to schedule no executors to any job. This function makes
         # sure the cluster is work conservative. Since the backup
         # policy is not strong, the learning agent should learn to
@@ -163,8 +164,8 @@ class Environment(object):
     def saturated(self, node):
         # frontier nodes := unsaturated nodes with all parent nodes saturated
         anticipated_task_idx = node.next_task_idx + \
-           self.exec_commit.node_commit[node] + \
-           self.moving_executors.count(node)
+                               self.exec_commit.node_commit[node] + \
+                               self.moving_executors.count(node)
         # note: anticipated_task_idx can be larger than node.num_tasks
         # when the tasks finish very fast before commitments are fulfilled
         return anticipated_task_idx >= node.num_tasks
@@ -175,7 +176,7 @@ class Environment(object):
 
         # schedule executors from the source until the commitment is fulfilled
         while len(self.exec_commit[source]) > 0 and \
-              len(self.exec_to_schedule) > 0:
+                len(self.exec_to_schedule) > 0:
 
             # keep fulfilling the commitment using free executors
             node = self.exec_commit.pop(source)
@@ -188,8 +189,8 @@ class Environment(object):
             if node is None:
                 # the next node is explicitly silent, make executor ilde
                 if executor.job_dag is not None and \
-                   any([not n.no_more_tasks for n in \
-                        executor.job_dag.nodes]):
+                        any([not n.no_more_tasks for n in \
+                             executor.job_dag.nodes]):
                     # mark executor as idle in its original job
                     self.free_executors.add(executor.job_dag, executor)
                 else:
@@ -338,7 +339,7 @@ class Environment(object):
         # no more decision to make, jobs all done or time is up
         done = (self.num_source_exec == 0) and \
                ((len(self.timeline) == 0) or \
-               (self.wall_time.curr_time >= self.max_time))
+                (self.wall_time.curr_time >= self.max_time))
 
         if done:
             assert self.wall_time.curr_time >= self.max_time or \

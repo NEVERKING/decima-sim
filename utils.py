@@ -6,7 +6,6 @@ from collections import OrderedDict
 
 
 def aggregate_gradients(gradients):
-
     ground_gradients = [np.zeros(g.shape) for g in gradients[0]]
     for gradient in gradients:
         for i in range(len(ground_gradients)):
@@ -81,8 +80,8 @@ def get_outer_product_boolean_mask(job_dags, executor_limits):
     base = 0
     for i in range(len(job_dags)):
         job_dag = job_dags[i]
-        mask[base : base + job_dag.num_nodes,
-             i * num_exec_limits : (i + 1) * num_exec_limits] = True
+        mask[base: base + job_dag.num_nodes,
+        i * num_exec_limits: (i + 1) * num_exec_limits] = True
         base += job_dag.num_nodes
 
     # reshape into 1D array
@@ -215,6 +214,7 @@ class SetWithCount(object):
     """
     allow duplication in set
     """
+
     def __init__(self):
         self.set = {}
 
@@ -246,3 +246,10 @@ def truncate_experiences(lst):
     batch_points.append(len(lst))
 
     return batch_points
+
+
+if __name__ == '__main__':
+    sfc = OrderedSet()
+    for i in range(20):
+        sfc.add(np.random.randint(10, 100))
+    print(sfc.to_list())

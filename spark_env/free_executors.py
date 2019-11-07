@@ -3,8 +3,7 @@ from utils import OrderedSet
 
 class FreeExecutors(object):
     def __init__(self, executors):
-        self.free_executors = {}
-        self.free_executors[None] = OrderedSet()
+        self.free_executors = {None: OrderedSet()}
         for executor in executors:
             self.free_executors[None].add(executor)
 
@@ -43,7 +42,6 @@ class FreeExecutors(object):
         del self.free_executors[job]
 
     def reset(self, executors):
-        self.free_executors = {}
-        self.free_executors[None] = OrderedSet()
+        self.free_executors = {None: OrderedSet()}
         for executor in executors:
             self.free_executors[None].add(executor)

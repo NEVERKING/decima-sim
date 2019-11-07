@@ -1,5 +1,5 @@
 import os
-# os.environ['CUDA_VISIBLE_DEVICES']=''
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import time
 import numpy as np
@@ -16,6 +16,7 @@ from tf_logger import TFLogger
 
 
 def invoke_model(actor_agent, obs, exp):
+    """ 调用模型 """
     # parse observation
     job_dags, source_job, num_source_exec, \
     frontier_nodes, executor_limits, \
@@ -93,6 +94,7 @@ def invoke_model(actor_agent, obs, exp):
         exp['gcn_masks'].append(gcn_masks)
         exp['dag_summ_back_mat'].append(dag_summ_backward_map)
 
+    # 选 node ，分配 executor 数量
     return node, use_exec
 
 
@@ -104,12 +106,14 @@ def train_agent(agent_id, param_queue, reward_queue, adv_queue, gradient_queue):
     env = Environment()
 
     # gpu configuration
-    config = tf.ConfigProto(
-        device_count={'GPU': args.worker_num_gpu},
-        gpu_options=tf.GPUOptions(
-            per_process_gpu_memory_fraction=args.worker_gpu_fraction))
+    # config = tf.ConfigProto(
+    #     device_count={'GPU': args.worker_num_gpu},
+    #     gpu_options=tf.GPUOptions(
+    #         per_process_gpu_memory_fraction=args.worker_gpu_fraction))
+    # sess = tf.Session(config=config)
 
-    sess = tf.Session(config=config)
+    gpu_options = tf.GPUOptions(allow_growth=True)
+    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
     # set up actor agent
     actor_agent = ActorAgent(
@@ -159,9 +163,9 @@ def train_agent(agent_id, param_queue, reward_queue, adv_queue, gradient_queue):
             exp['wall_time'].append(env.wall_time.curr_time)
 
             while not done:
-                
+                # 调用模型
                 node, use_exec = invoke_model(actor_agent, obs, exp)
-
+                # 状态转移
                 obs, reward, done = env.step(node, use_exec)
 
                 if node is not None:
@@ -237,12 +241,17 @@ def main():
         agents[i].start()
 
     # gpu configuration
-    config = tf.ConfigProto(
-        device_count={'GPU': args.master_num_gpu},
-        gpu_options=tf.GPUOptions(
-            per_process_gpu_memory_fraction=args.master_gpu_fraction))
-
-    sess = tf.Session(config=config)
+    # config = tf.ConfigProto(
+    #     device_count={'GPU': args.master_num_gpu},
+    #     gpu_options=tf.GPUOptions(
+    #         per_process_gpu_memory_fraction=args.master_gpu_fraction))
+    gpu_options = tf.GPUOptions(allow_growth=True)
+    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+    # sess = tf.Session(config=config)
+    # config = tf.ConfigProto()
+    # config.gpu_options.per_process_gpu_memory_fraction = 0.3  # 占用GPU80%的显存
+    # sess = tf.Session(config=config)
+    # sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
     # set up actor agent
     actor_agent = ActorAgent(

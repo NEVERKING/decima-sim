@@ -1,6 +1,6 @@
 from utils import *
 
-# super class of scheduling agnet
+# super class of scheduling agent
 class Agent(object):
     def __init__(self):
         pass

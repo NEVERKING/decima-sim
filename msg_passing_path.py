@@ -88,6 +88,7 @@ def get_bottom_up_paths(job_dag):
     """
     The paths start from all leaves and end with
     frontier (parents all finished) unfinished nodes
+    由下而上：从最后执行的开始，直到最上层的未执行的
     """
     num_nodes = job_dag.num_nodes
 
