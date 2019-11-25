@@ -156,7 +156,7 @@ def generate_jobs(np_random, timeline, wall_time):
 
 
 if __name__ == '__main__':
-    jobs = load_job(r'D:\Develop\WorkSpace\Pycharm\decima-sim\spark_env\tpch\\', '100g', 10, Timeline(), np.random.RandomState())
+    jobs = load_job(r'D:\Develop\WorkSpace\Pycharm\decima-sim\spark_env\tpch\\', '100g', 5, Timeline(), np.random.RandomState())
     print(jobs.adj_mat)
     print(jobs.arrived)
     print([i.idx for i in jobs.nodes])

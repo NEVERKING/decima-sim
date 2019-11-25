@@ -15,9 +15,9 @@ parser.add_argument('--query_type', type=str, default='tpch',
                     help='query type (default: tpch)')
 parser.add_argument('--job_folder', type=str, default='./spark_env/tpch/',
                     help='job folder path (default: ./spark_env/tpch/)')
-parser.add_argument('--result_folder', type=str, default='results/',
+parser.add_argument('--result_folder', type=str, default=r'D:\Develop\WorkSpace\Pycharm\decima-sim\results',
                     help='Result folder path (default: ./results)')
-parser.add_argument('--model_folder', type=str, default='./models/',
+parser.add_argument('--model_folder', type=str, default=r'D:\Develop\WorkSpace\Pycharm\decima-sim\models',
                     help='Model folder path (default: ./models)')
 
 # -- Environment --

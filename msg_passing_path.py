@@ -5,11 +5,9 @@ child pairs at each iteration) and frontier masks (aggregation
 node points at each iteration)
 """
 
-import numpy as np
-import tensorflow as tf
-from utils import OrderedSet
-from sparse_op import *
 from param import *
+from sparse_op import *
+from utils import OrderedSet
 
 
 class Postman(object):
@@ -68,6 +66,7 @@ def get_msg_path(job_dags):
 def get_init_frontier(job_dag, depth):
     """
     Get the initial set of frontier nodes, based on the depth
+    获取最下面的结点（没有子节点）
     """
     sources = set(job_dag.nodes)
 
@@ -98,9 +97,10 @@ def get_bottom_up_paths(job_dag):
     # get set of frontier nodes in the beginning
     # this is constrained by the message passing depth
     frontier = get_init_frontier(job_dag, args.max_depth)
+    # [统计该节点位于msg的第几层]
     msg_level = {}
 
-    # initial nodes are all message passed
+    # [最下层的结点相当于已经完成] initial nodes are all message passed
     for n in frontier:
         msg_level[n] = 0
 
@@ -160,7 +160,6 @@ def get_bottom_up_paths(job_dag):
     for _ in range(depth, args.max_depth):
         msg_mats.append(SparseMat(dtype=np.float32,
             shape=(num_nodes, num_nodes)))
-
     return msg_mats, msg_masks
 
 

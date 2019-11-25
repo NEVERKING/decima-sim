@@ -279,7 +279,7 @@ class Environment(object):
                 # assign new destination for the job
                 self.assign_executor(finished_task.executor, frontier_changed)
 
-                # bookkeepings for job completion
+                # [一个job dag完成] bookkeepings for job completion
                 if node.job_dag.num_nodes_done == node.job_dag.num_nodes:
                     assert not node.job_dag.completed  # only complete once
                     node.job_dag.completed = True
